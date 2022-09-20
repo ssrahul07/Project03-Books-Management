@@ -7,34 +7,34 @@ const emailValidation = function(email){
 
 const bookSchema = new mongoose.Schema({
     title: {
-        type: string,
+        type: String,
         required: [true, "Title is required"],
         enum: [Mr, Mrs, Miss]
     },
     name: {
-        type: string,
+        type: String,
         required: [true, "Name is required"],
     },
     phone: {
-        type: string,
+        type: String,
         required: true,
         unique: [true, "Phone should be unique"]
     },
     email: {
-        type: string,
+        type: String,
         required: true,
         validate:[emailValidation,"plz enter valid email"],
         unique: [true, "email should be unique"]
     },
 
     password: {
-        type: string,
+        type: String,
         required: [true, "password is required"],
     },
     address: {
-        street: { string },
-        city: { string },
-        pincode: { string }
+        street: { String },
+        city: { String },
+        pincode: { String }
     }
 
 
