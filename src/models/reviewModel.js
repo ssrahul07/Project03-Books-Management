@@ -8,13 +8,13 @@ const reviewModel = new mongoose.Schema(
               bookId: {
                      type: ObjectId,
                      required: true,
-                     ref: bookModel,
+                     ref: "bookModel",
                      trim: true
               },
               reviewedBy: {
                      type: String,
                      required: true,
-                     default: Guest,
+                     default: "Guest",
                      value: String
               },
               reviewedAt: {
@@ -22,7 +22,7 @@ const reviewModel = new mongoose.Schema(
                      required: true
               },
               rating: {
-                     type: number,
+                     type: Number,
                      required: true
               },
               review: String,
