@@ -21,7 +21,7 @@ const authentication = async function (req, res, next) {
     }
 }
 
-/*const authorisation = async function (req, res, next) {
+const authorisation = async function (req, res, next) {
     try {
         let book_id = req.params.bookId;
         if (!book_id)
@@ -48,11 +48,11 @@ const authentication = async function (req, res, next) {
     }
 }
 
-*/
+
 
 
 
 
 
 module.exports.authentication=authentication
-//module.exports.authorization=authorisation
+module.exports.authorization=authorisation

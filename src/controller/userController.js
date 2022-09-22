@@ -57,7 +57,7 @@ const registerUser = async function (req, res) {
 
 
 
-        ///////////////////////////// CREATING USER ///////////////////////////////////////
+        //=============================== CREATING ==========================================
         if (req.body && Object.keys(req.body).length > 0) {
             let user = await userModel.create(req.body);
             return res.status(201).send({ status: true, message: 'Success', data: user })
