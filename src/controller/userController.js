@@ -107,7 +107,7 @@ const login = async function (req, res) {
     } catch (error) {
         res.status(500).send({ status: false, err: error.message })
     }
-
+    
 }
 
 //*********************************************** login end ************************************************************** */

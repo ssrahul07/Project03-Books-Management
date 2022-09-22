@@ -32,9 +32,9 @@ const userSchema = new mongoose.Schema({
         required: [true, "password is required"],
     },
     address: {
-        street: { String },
-        city: { String },
-        pincode: { String }
+        street: String,
+        city: String,
+        pincode: String 
     }
 
 
