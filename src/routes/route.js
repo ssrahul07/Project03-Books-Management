@@ -17,4 +17,15 @@ route.post("/register",userController.registerUser);
 
 route.post("/login",userController.login);
 
+
+
+//***********************************  review ******************************************* */
+const reviewController = require("../controller/reviewController")
+
+route.post("/books/:bookId/review", reviewController.createReview)
+
+route.put("/books/:bookId/review/:reviewId", reviewController.updateReview)
+
+route.delete("/books/:bookId/review/:reviewId", reviewController.deleteReview)
+
 module.exports = route
