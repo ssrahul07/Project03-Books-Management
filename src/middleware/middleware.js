@@ -57,9 +57,13 @@ const Authorisation = async function (req, res, next) {
         //<<<<================================ Authorisation By Path Params =====================================>>>>//
     const Authorisation_2 = async function (req, res, next) {
         try{
-            
-            const getBook = await bookModel.findOne({_id:req.params.bookId, isDeleted: false});    
-            if(Object.keys(getBook).length == 0)  return res.status(404).send({ status: false, message: "No Book Found" })  
+            // console.log(req.params.bookId);
+            let bookId = req.params.bookId;
+            if(!ObjectId.isValid(bookId)) return res.status(404).send({ status: false, message: "Book id is not valid" })  
+
+            const getBook = await bookModel.findOne({_id:req.params.bookId, isDeleted: false}); 
+
+            if(!getBook)  return res.status(404).send({ status: false, message: "No Book Found" })  
     
             //==================== Comparing Authorid of DB and Decoded Documents =====================//
             if (getBook.userId.toString() !== req.token.userId)
