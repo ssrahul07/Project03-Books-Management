@@ -1,10 +1,10 @@
 const mongoose = require("mongoose")
 const ObjectId = mongoose.Schema.Types.ObjectId
-const moment = require("moment")
+// const moment = require("moment")
 
-const dateValidation = function(date){
-    moment('date').format('YYYY MM DD');
-}
+// const dateValidation = function(date){
+//     moment('date').format('YYYY MM DD');
+// }
 
 
 const bookSchema = new mongoose.Schema({
@@ -14,7 +14,6 @@ const bookSchema = new mongoose.Schema({
         required: [true, "Title is required"],
         unique: [true, "Title should be unique"]     
     },
-
     excerpt: {
          type: String,
         required: [true, "Title is required"]
@@ -38,26 +37,20 @@ const bookSchema = new mongoose.Schema({
         required: [true, "Title is required"]
     },
     reviews: {
-        type:number, 
-        default: 0, 
-        // comment: "Holds number of reviews of this book"
+        type:Number, 
+        default: 0,
     },
     deletedAt: {
         type:Date, 
         default:null
     }, 
     isDeleted: {
-        type:boolean, 
+        type:Boolean, 
         default: false
     },
     releasedAt: {
         type:Date, 
-        required: [true, "releaseAt is required"], 
-        validate:[dateValidation,"formate shoulbe be (\"YYYY-MM-DD\") " ]
-        // format("YYYY-MM-DD")
-    },
-        
-
-}, { timestamps: true })
+        required: [true, "releaseAt is required"]
+    }}, { timestamps: true })
 
 module.exports = mongoose.model('Book', bookSchema)

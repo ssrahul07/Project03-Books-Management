@@ -3,16 +3,6 @@ const jwt = require("jsonwebtoken")
 const userModel = require('../models/userModel')
 const isValid = require("../validate/validator")
 
-const emailValidation = function (email) {
-    let regexForEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-    return regexForEmail.test(email)
-}
-
-const passwordValidation = function (password) {
-    let regexForPassword = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,15}$/
-    return regexForPassword.test(password)
-}
-
 //********************************** user register start ****************************************************************************** */
 
 const registerUser = async function (req, res) {
@@ -54,10 +44,7 @@ const registerUser = async function (req, res) {
         if (!password) return res.status(400).send({ status: false, message: "Please, enter valid password" })
 
 
-
-
-
-        ///////////////////////////// CREATING USER ///////////////////////////////////////
+///////////////////////////// CREATING USER ///////////////////////////////////////
         if (req.body && Object.keys(req.body).length > 0) {
             let user = await userModel.create(req.body);
             return res.status(201).send({ status: true, message: 'Success', data: user })
@@ -69,8 +56,6 @@ const registerUser = async function (req, res) {
     }
 }
 
-
-
 //*********************************** user register end ********************************************************************** */
 
 
@@ -79,15 +64,15 @@ const registerUser = async function (req, res) {
 const login = async function (req, res) {
     try {
 
-        if (req.body && Object.keys(req.body) > 0) {
+        if (req.body && Object.keys(req.body).length > 0) {
 
             let { email, password } = req.body
 
-            if (!email || !password) return res.status(400).send({ status: false, msg: " plz enter valid email id and password " })
+            if (!email || !password) return res.status(400).send({ status: false, msg: " Please, enter valid email id and password " })
 
-            let user = await userModel.find({ email: email, password: password })
+            let user = await userModel.findOne({ email: email, password: password })
 
-            if (!user) return res.status(401).send({ status: false, msg: " No data found" })
+            if (!user) return res.status(401).send({ status: false, msg: " No such user exists" })
 
             let token = jwt.sign(
                 {
@@ -98,14 +83,19 @@ const login = async function (req, res) {
 
                 }, "secretKeyForgroup23")
 
-            res.status(200).send({ status: true, meessage: "success", data: token })
+            let finalData = {
+                token: token,
+                userId: user._id.toString()
+            }    
+
+            return res.status(200).send({ status: true, meessage: "Success", data: finalData })
 
         } else {
-            res.status(400).send({ status: false, msg: "body can't be empty" })
+            return res.status(400).send({ status: false, msg: "body can't be empty" })
         }
 
     } catch (error) {
-        res.status(500).send({ status: false, err: error.message })
+        return res.status(500).send({ status: false, err: error.message })
     }
     
 }
