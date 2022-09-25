@@ -21,11 +21,12 @@ const mandatory = function (data) {
 }
 
 const isValidTitle = function(title) {
-    if (!/^(Mr|Mrs|Miss)+$\b/.test(title)) return `${title} is not a valid title`;
+    if (!/^(Mr|Mrs|Miss)+$\b/.test(title)) return "Title should be in Mr|Mrs|Miss" ;
 }
 
 const isValidName = function (name) {
-  if (!/^[a-z.'-]+$/i.test(name)) return `${name} is not a valid name`
+  
+  if (!/^[A-Z][a-z]{1,}(?: [A-Z][a-z]+){1,}$/i.test(name)) return `${name} is not a valid name`    
 }
 
 const isValidPhone = function(phone) {
