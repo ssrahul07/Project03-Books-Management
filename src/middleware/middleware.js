@@ -24,14 +24,10 @@ const Authentication = async function (req, res, next) {
     }
 }
 
-<<<<<<< HEAD
-const authorisation = async function (req, res, next) {
-=======
 
 
 //=====================This function used for Authorisation(Phase II)=====================//
 const Authorisation = async function (req, res, next) {
->>>>>>> e760c5ad1bf9ff4695cae83054e2f1c8d76d299b
     try {
         let userId = req.body.userId
           
@@ -62,8 +58,6 @@ const Authorisation = async function (req, res, next) {
 }
 
 
-<<<<<<< HEAD
-=======
         //<<<<================================ Authorisation By Path Params =====================================>>>>//
     const Authorisation_2 = async function (req, res, next) {
         try{
@@ -86,16 +80,9 @@ const Authorisation = async function (req, res, next) {
     }
 
 }
->>>>>>> e760c5ad1bf9ff4695cae83054e2f1c8d76d299b
 
 
 
 
-<<<<<<< HEAD
-
-module.exports.authentication=authentication
-module.exports.authorization=authorisation
-=======
 //=====================Module Export=====================//
 module.exports = { Authentication, Authorisation, Authorisation_2 }
->>>>>>> e760c5ad1bf9ff4695cae83054e2f1c8d76d299b

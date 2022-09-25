@@ -49,13 +49,6 @@ console.log(typeof (data.address));
         if (!password) return res.status(400).send({ status: false, message: " password sould be in the rang of 8 to 15 with the combination of upercase lowercase number and special character" })
 
 
-<<<<<<< HEAD
-
-
-
-        //=============================== CREATING ==========================================
-=======
->>>>>>> e760c5ad1bf9ff4695cae83054e2f1c8d76d299b
         if (req.body && Object.keys(req.body).length > 0) {
             let user = await userModel.create(req.body);
             return res.status(201).send({ status: true, message: 'Success', data: user })

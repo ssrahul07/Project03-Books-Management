@@ -125,25 +125,13 @@ const getBooks = async function (req, res) {
 
 //******************************* get book by bookId in params ************************************ */
 
-<<<<<<< HEAD
-const getBookWithParam = async function (req, res) {
-    try{
-    let bookId  =  req.params.bookId;
-    if(!bookId) return res.status(400).send({status: false, message: "Please, enter Book id"});
-    // let isValid = mongoose.Types.ObjectId.isValid(book)
-    // if(!isValid.isValid(book)) return res.status(400).send({status: false, message: "Invalid Book id"});
-    if(!mongoose.Types.ObjectId.isValid(bookId)) return res.status(400).send({status: false, message: "Invalid Book id"});
-    let getBook = await bookModel.findById(bookId).select({ISBN:0,__v:0}).lean();
-    if(!getBook) return res.status(404).send({status: false, message: `No such book exists with this id ${bookId}`});
-    let getReview = await reviewModel.find({bookId: bookId, isDeleted: false})
-=======
+
 const getBookByPathParam = async function (req, res) {
   let bookId = req.params.bookId;
   if (!bookId)
     return res
       .status(400)
       .send({ status: false, message: "Please, enter Book id" });
->>>>>>> e760c5ad1bf9ff4695cae83054e2f1c8d76d299b
 
   // if(!isValid.isValid(book)) return res.status(400).send({status: false, message: "Invalid Book id"});
   if (!ObjectId.isValid(bookId))
@@ -161,9 +149,6 @@ const getBookByPathParam = async function (req, res) {
         message: `No such book exists with this id ${bookId}`,
       });
 
-<<<<<<< HEAD
-    return res.status(200).send({status: true, message: "Books list", data: getBook})
-=======
   let getReview = await reviewModel.find({ bookId: bookId, isDeleted: false });
 
   let reviewCount = getReview.length;
@@ -175,14 +160,9 @@ const getBookByPathParam = async function (req, res) {
     .status(200)
     .send({ status: true, message: "Books list", data: getBook });
 };
->>>>>>> e760c5ad1bf9ff4695cae83054e2f1c8d76d299b
 
-}
-catch(error){
-res.status(500).send({status: false, message: error.message})
-}
-}
-//*********************************** update book by bookId ******************************** */
+
+/* *********************************** update book by bookId ******************************** */
 
 const updateBooks = async function (req, res) {
   try {
