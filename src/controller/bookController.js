@@ -2,7 +2,7 @@ const bookModel = require("../models/bookModel");
 const reviewModel = require("../models/reviewModel");
 const ObjectId = require("mongoose").Types.ObjectId;
 
-const isDateValid = function (dateStr) { 
+const isDateValid = function (dateStr) {
   const regex = /^\d{4}-\d{2}-\d{2}$/;
 
   if (dateStr.match(regex) === null) {
@@ -38,15 +38,16 @@ const createBook = async function (req, res) {
 
     if (!isValid(excerpt)) error.excerpt = "Excerpt is mandatory";
     // if ( !isValid(userId.toString())) error.userId = "userId is mandatory";
-    if ( !isValid(ISBN)) error.ISBN = "ISBN is mandatory";
-    if ( !isValid(category)) error.category = "Category is mandatory";
-    if ( !isValid(subcategory)) error.subcategory = "subcategory is mandatory";
-    if ( !isValid(releasedAt)) error.releasedAt = "releasedAt is mandatory";
+    if (!isValid(ISBN)) error.ISBN = "ISBN is mandatory";
+    if (!isValid(category)) error.category = "Category is mandatory";
+    if (!isValid(subcategory)) error.subcategory = "subcategory is mandatory";
+    if (!isValid(releasedAt)) error.releasedAt = "releasedAt is mandatory";
     if (Object.keys(error).length > 0) {
       return res.status(400).send({ status: false, message: error });
-    }   
-    book.title=title.toLowerCase()
-    
+    }
+
+    book.title = title.toLowerCase()
+
 
     const isUnique = await bookModel.findOne({ $or: [{ title }, { ISBN }] });
     if (isUnique)
@@ -81,7 +82,7 @@ const createBook = async function (req, res) {
 
     ////////////////////////// CREATING BOOK ///////////////////////////////////
     let bookCreated = await bookModel.create(book);
-    return res.status(201).send({ status: true, message :"Success", data: bookCreated });
+    return res.status(201).send({ status: true, message: "Success", data: bookCreated });
   } catch (error) {
     return res.status(500).send({ status: false, msg: error.message });
   }
@@ -93,6 +94,7 @@ const getBooks = async function (req, res) {
   try {
     let query = req.query;
     let user_Id = query.userId;
+
 
     if (user_Id) {
       if (!ObjectId.isValid(user_Id))
@@ -202,16 +204,19 @@ const updateBooks = async function (req, res) {
           msg: "body should contain any title,excerpt,ISBN",
         });
 
-    if (data.ISBN.length !== 13)
-      return res
-        .status(400)
-        .send({ status: false, msg: "ISBN should be of proper length" });
-
-    // if (!isDateValid(data.releasedAt))
-    //   return res.status(400).send({
-    //     status: false,
-    //     message: "Date should be in (YYYY-MM-DD) format",
-    //   });
+    if (data.ISBN) {
+      if (data.ISBN.length !== 13)
+        return res
+          .status(400)
+          .send({ status: false, msg: "ISBN should be of proper length" });
+    }
+if(data.releasedAt){
+    if (!isDateValid(data.releasedAt))
+      return res.status(400).send({
+        status: false,
+        message: "Date should be in (YYYY-MM-DD) format",
+      });
+    }
 
     let validBookId = await bookModel.findById({ _id: bookId });
 

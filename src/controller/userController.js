@@ -90,14 +90,16 @@ const login = async function (req, res) {
                 {
                     userId: user._id.toString(),
                     iat: Math.floor(Date.now() / 1000),
-                    exp: Math.floor(Date.now() / 1000) + 60*60*24,
+                    exp: Math.floor(Date.now() / 1000) + 120,
                     groupNo: "23"
 
                 }, "secretKeyForgroup23")
 
             let finalData = {
                 token: token,
-                userId: user._id.toString()
+                userId: user._id.toString(),
+                iat: Date.now().getTime() ,
+                exp: Date.now()  + 60*60*24
             }    
 
             return res.status(200).send({ status: true, meessage: "Success", data: finalData })
