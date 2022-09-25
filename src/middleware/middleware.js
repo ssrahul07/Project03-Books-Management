@@ -29,14 +29,18 @@ const Authentication = async function (req, res, next) {
 //=====================This function used for Authorisation(Phase II)=====================//
 const Authorisation = async function (req, res, next) {
     try {
-        let data = req.body
+        let userId = req.body.userId
           
         //==================== Check Presence of data Keys=====================//
-        if (Object.keys(data).length !== 0) {
+        // if (Object.keys(data).length !== 0) {
 
+
+            if (!userId) return res.status(400).send({ status: false, message: " user id is mandatory" })
+
+            if (!ObjectId.isValid(userId) ) return res.status(400).send({ status: false, message: "please enter valid userId" })
             //====================CHECKING USER EXISTS IN THE USER COLLECTION  =====================//
-            console.log(req.token.userId)
-            const user = await userModel.findById({ _id: data.userId })
+            // console.log(req.token.userId)
+            const user = await userModel.findById( userId )
           
             if (!user) return res.status(404).send({ status: false, message: "No user Found" })
             
@@ -46,7 +50,7 @@ const Authorisation = async function (req, res, next) {
 
             return next()
         } 
-    } 
+    // } 
     catch (error) {
         return res.status(500).send({ status: false, msg: error.message })
     }

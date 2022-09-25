@@ -8,7 +8,7 @@ const isValid = require("../validate/validator")
 const registerUser = async function (req, res) {
     try {
         let data = req.body;
-        // if(!data) return res.status(400).send({status: false, message: "body can not be empty"})
+        if(Object.keys(data).length== 0 ) return res.status(400).send({status: false, message: "body can not be empty"})
 
         let mandate = isValid.mandatory(data)
         if (mandate) {
@@ -37,14 +37,18 @@ const registerUser = async function (req, res) {
         if (email) {
             return res.status(400).send({ status: false, message: "Please, enter valid email" })
         }
+        
+console.log(typeof (data.address));
+        if(typeof (data.address) !== "object") return res.status(400).send({ status: false, message: "address should be in object formate" })
+
+
         const isUniqueEmail = await userModel.findOne({ email: data.email })
         if (isUniqueEmail) return res.status(400).send({ status: false, message: "Email is already present" })
 
         let password = isValid.passwordValidation(data.password)
-        if (!password) return res.status(400).send({ status: false, message: "Please, enter valid password" })
+        if (!password) return res.status(400).send({ status: false, message: " password sould be in the rang of 8 to 15 with the combination of upercase lowercase number and special character" })
 
 
-///////////////////////////// CREATING USER ///////////////////////////////////////
         if (req.body && Object.keys(req.body).length > 0) {
             let user = await userModel.create(req.body);
             return res.status(201).send({ status: true, message: 'Success', data: user })
@@ -55,6 +59,7 @@ const registerUser = async function (req, res) {
         return res.status(500).send({ status: false, message: error.message })
     }
 }
+
 
 //*********************************** user register end ********************************************************************** */
 
@@ -78,7 +83,7 @@ const login = async function (req, res) {
                 {
                     userId: user._id.toString(),
                     iat: Math.floor(Date.now() / 1000),
-                    exp: Math.floor(Date.now() / 1000) + 10 * 60 * 60,
+                    exp: Math.floor(Date.now() / 1000) + 60*60*24,
                     groupNo: "23"
 
                 }, "secretKeyForgroup23")

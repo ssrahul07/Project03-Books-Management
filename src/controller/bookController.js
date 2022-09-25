@@ -2,7 +2,7 @@ const bookModel = require("../models/bookModel");
 const reviewModel = require("../models/reviewModel");
 const ObjectId = require("mongoose").Types.ObjectId;
 
-const isDateValid = function (dateStr) {
+const isDateValid = function (dateStr) { 
   const regex = /^\d{4}-\d{2}-\d{2}$/;
 
   if (dateStr.match(regex) === null) {
@@ -19,6 +19,13 @@ const isDateValid = function (dateStr) {
   return date.toISOString().startsWith(dateStr);
 };
 
+const isValid = function (value) {
+  if (typeof value === 'undefined' || typeof value === null) return false
+  if (typeof value === 'string' && value.trim().length == 0) return false
+  return true
+
+}
+
 //===============================CREATE BOOK ======================//
 const createBook = async function (req, res) {
   try {
@@ -27,16 +34,17 @@ const createBook = async function (req, res) {
     let { title, excerpt, userId, ISBN, category, subcategory, releasedAt } =
       book;
     let error = {};
-    if (!title) error.title = "Title is mandatory";
-    if (!excerpt) error.excerpt = "Excerpt is mandatory";
-    if (!userId) error.userId = "userId is mandatory";
-    if (!ISBN) error.ISBN = "ISBN is mandatory";
-    if (!category) error.category = "Category is mandatory";
-    if (!subcategory) error.subcategory = "subcategory is mandatory";
-    if (!releasedAt) error.releasedAt = "releasedAt is mandatory";
+    if (!isValid(title)) error.title = "Title is mandatory";
+    if (!isValid(excerpt)) error.excerpt = "Excerpt is mandatory";
+    // if ( !isValid(userId.toString())) error.userId = "userId is mandatory";
+    if ( !isValid(ISBN)) error.ISBN = "ISBN is mandatory";
+    if ( !isValid(category)) error.category = "Category is mandatory";
+    if ( !isValid(subcategory)) error.subcategory = "subcategory is mandatory";
+    if ( !isValid(releasedAt)) error.releasedAt = "releasedAt is mandatory";
     if (Object.keys(error).length > 0) {
       return res.status(400).send({ status: false, message: error });
-    }
+    }   
+    
 
     const isUnique = await bookModel.findOne({ $or: [{ title }, { ISBN }] });
     if (isUnique)
@@ -79,7 +87,6 @@ const createBook = async function (req, res) {
 
 //**************************** get book with filter ************************************************ */
 
-// ------------------------------------------------GET BOOKS API----------------------------------------------
 const getBooks = async function (req, res) {
   try {
     let query = req.query;
@@ -150,30 +157,6 @@ const getBookByPathParam = async function (req, res) {
 
 //*********************************** update book by bookId ******************************** */
 
-//====================deleteApi================================
-
-const deleteBook = async function (req, res) {
-  try {
-    let bookId = req.params.bookId;
-
-    let book = await bookModel.findOne({ _id: bookId, isDeleted: false });
-
-    if (book) {
-      await bookModel.findOneAndUpdate(
-        { _id: bookId },
-        { $set: { isDeleted: true, deletedAt: new Date(), new: true } }
-      );
-      res
-        .status(200)
-        .send({ status: true, message: "Book Deleted Successfully" });
-    } else {
-      return res.status(400).send({ status: false, message: "Book not found" });
-    }
-  } catch (error) {
-    res.status(500).send({ status: false, message: error.message });
-  }
-};
-
 const updateBooks = async function (req, res) {
   try {
     let bookId = req.params.bookId;
@@ -235,10 +218,36 @@ const updateBooks = async function (req, res) {
   }
 };
 
+
+//**************************************   delete book  **************************************** */
+
+const deleteBook = async function (req, res) {
+  try {
+    let bookId = req.params.bookId;
+
+    let book = await bookModel.findOne({ _id: bookId, isDeleted: false });
+
+    if (book) {
+      await bookModel.findOneAndUpdate(
+        { _id: bookId },
+        { $set: { isDeleted: true, deletedAt: new Date(), new: true } }
+      );
+      res
+        .status(200)
+        .send({ status: true, message: "Book Deleted Successfully" });
+    } else {
+      return res.status(400).send({ status: false, message: "Book not found" });
+    }
+  } catch (error) {
+    res.status(500).send({ status: false, message: error.message });
+  }
+};
+
+
 module.exports = {
   createBook,
   getBooks,
   getBookByPathParam,
-  deleteBook,
   updateBooks,
+  deleteBook,
 };
