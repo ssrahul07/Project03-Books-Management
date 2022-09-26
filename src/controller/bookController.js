@@ -35,6 +35,7 @@ const createBook = async function (req, res) {
       book;
     let error = {};
     if (!isValid(title)) error.title = "Title is mandatory";
+
     if (!isValid(excerpt)) error.excerpt = "Excerpt is mandatory";
     // if ( !isValid(userId.toString())) error.userId = "userId is mandatory";
     if ( !isValid(ISBN)) error.ISBN = "ISBN is mandatory";
@@ -44,6 +45,7 @@ const createBook = async function (req, res) {
     if (Object.keys(error).length > 0) {
       return res.status(400).send({ status: false, message: error });
     }   
+    book.title=title.toLowerCase()
     
 
     const isUnique = await bookModel.findOne({ $or: [{ title }, { ISBN }] });
@@ -52,7 +54,7 @@ const createBook = async function (req, res) {
         .status(400)
         .send({
           status: false,
-          message: "title should be unique or ISBN shoul be unique",
+          message: "title and ISBN should be unique",
         });
 
     if (ISBN.length !== 13)
@@ -79,7 +81,7 @@ const createBook = async function (req, res) {
 
     ////////////////////////// CREATING BOOK ///////////////////////////////////
     let bookCreated = await bookModel.create(book);
-    return res.status(201).send({ status: true, data: bookCreated });
+    return res.status(201).send({ status: true, message :"Success", data: bookCreated });
   } catch (error) {
     return res.status(500).send({ status: false, msg: error.message });
   }
@@ -91,6 +93,7 @@ const getBooks = async function (req, res) {
   try {
     let query = req.query;
     let user_Id = query.userId;
+
     if (user_Id) {
       if (!ObjectId.isValid(user_Id))
         return res.status(400).send({ status: false, message: "not valid id" });
