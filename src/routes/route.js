@@ -5,6 +5,7 @@ const userController = require("../controller/userController")
 const bookController = require("../controller/bookController")
 const middleware = require ("../middleware/middleware")
 const reviewController = require("../controller/reviewController")
+const fileController = require("../controller/fileController")
 
 
 router.post("/register", userController.registerUser);
@@ -33,5 +34,17 @@ router.post("/books/:bookId/review", reviewController.createReview)
 router.put("/books/:bookId/review/:reviewId", reviewController.updateReview)
 
 router.delete("/books/:bookId/review/:reviewId", reviewController.deleteReview)
+
+//**************************************  file upload *************************************** */
+
+router.post("/write-file-aws", fileController.file)
+
+//********************************************************************************************** */
+
+
+
+
+
+
 
 module.exports = router

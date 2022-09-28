@@ -240,6 +240,7 @@ const deleteBook = async function (req, res) {
         { _id: bookId },
         { $set: { isDeleted: true, deletedAt: new Date(), new: true } }
       );
+      
       res
         .status(200)
         .send({ status: true, message: "Book Deleted Successfully" });
