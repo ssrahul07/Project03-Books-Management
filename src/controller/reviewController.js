@@ -55,7 +55,7 @@ const createReview = async function (req, res) {
 
         let data = req.body
 
-        if (Object.keys(data) == 0) return res.status(400).send({ status: false, message: "req body empty" })
+        if (Object.keys(data).length == 0) return res.status(400).send({ status: false, message: "req body is empty" })
 
         if (!isValidRating(data.rating)) return res.status(400).send({ status: false, message: " rating should be in range between 1 to 5 and should be in Whole Number" })
 

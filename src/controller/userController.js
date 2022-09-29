@@ -8,7 +8,7 @@ const isValid = require("../validate/validator")
 const registerUser = async function (req, res) {
     try {
         let data = req.body;
-        if(Object.keys(data).length== 0 ) return res.status(400).send({status: false, message: "body can not be empty"})
+        if (Object.keys(data).length == 0) return res.status(400).send({ status: false, message: "body can not be empty" })
 
         let mandate = isValid.mandatory(data)
         if (mandate) {
@@ -37,9 +37,9 @@ const registerUser = async function (req, res) {
         if (email) {
             return res.status(400).send({ status: false, message: "Please, enter valid email" })
         }
-        
-console.log(typeof (data.address));
-        if(typeof (data.address) !== "object") return res.status(400).send({ status: false, message: "address should be in object formate" })
+
+        console.log(typeof (data.address));
+        if (typeof (data.address) !== "object") return res.status(400).send({ status: false, message: "address should be in object formate" })
 
 
         const isUniqueEmail = await userModel.findOne({ email: data.email })
@@ -93,7 +93,7 @@ const login = async function (req, res) {
                 userId: user._id.toString(),
                 iat: Math.floor(Date.now() / 1000),
                 exp: Math.floor(Date.now() / 1000) + 120,
-            }    
+            }
 
             return res.status(200).send({ status: true, meessage: "Success", data: finalData })
 
@@ -104,7 +104,7 @@ const login = async function (req, res) {
     } catch (error) {
         return res.status(500).send({ status: false, err: error.message })
     }
-    
+
 }
 
 //*********************************************** login end ************************************************************** */
